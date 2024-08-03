@@ -1,11 +1,12 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { Iproduct } from '../interface/Iproduct'
-import Joi from 'joi'
 import { joiResolver } from '@hookform/resolvers/joi'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Instance from '../api'
-import { useNavigate } from 'react-router-dom'
+import Joi from 'joi'
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Iproduct } from '../../../interface/Iproduct'
+import Instance from '../../../api'
+
+
 
 const Schema = Joi.object({
   name:Joi.string().required().min(3).messages({
@@ -24,37 +25,51 @@ const Schema = Joi.object({
 
 type Props = {
   setProducts:React.Dispatch<React.SetStateAction<Iproduct[]>>,
+  Products:Iproduct[]
 }
 
 
-
-const AddProduct = ({setProducts}: Props) => {
-const navigate = useNavigate()
-
-const {
-  register,
-  handleSubmit,
-  formState:{errors}
-}=useForm<Iproduct>(
-  {resolver:joiResolver(Schema)}
-)
-  function OnSubmitAdd(product:Iproduct){
+const EditProduct = ({setProducts,Products}: Props) => {
+  const id = useParams().id;
+ 
+  console.log(id);
+  
+  const navigate = useNavigate()
+  const [OneProduct,setOneProduct]=useState<Iproduct|null>()
+  
+  useEffect(()=>{
     (async()=>{
-      const response = await Instance.post('/products',product)
-      console.log(response.data);
-      setProducts(Product=>[...Product,response.data])
+      const {data}= await Instance.get(`/products/${id}`)
+      setOneProduct(data)
+    })()
+  },[id])
+
+  const {
+    register,
+    handleSubmit,
+    formState:{errors}
+  }=useForm<Iproduct>(
+    {resolver:joiResolver(Schema)}
+  )
+
+  function OnSubmitEit(product:Iproduct){
+    (async()=>{
+      const {data} = await Instance.put(`/products/${id}`,{...product,id})
+      console.log(data);
+      setProducts(Products.map((item)=>(item.id==data.id?data:item)))
       navigate('/')
     })()            
   }
 
   return (
     <div className="container mt-5">
-    <form onSubmit={handleSubmit(OnSubmitAdd)}>
+    <form onSubmit={handleSubmit(OnSubmitEit)}>
       <h1 className="mb-4">Add SP</h1>
       
       <div className="form-group mb-3">
         <label htmlFor="name">Tên sản phẩm</label>
         <input
+          defaultValue ={OneProduct?.name}
           type="text"
           id="name"
           className={`form-control ${errors.name ? 'is-invalid' : ''}`}
@@ -67,6 +82,7 @@ const {
       <div className="form-group mb-3">
         <label htmlFor="price">Price sản phẩm</label>
         <input
+         defaultValue ={OneProduct?.price}
           type="number"
           id="price"
           className={`form-control ${errors.price ? 'is-invalid' : ''}`}
@@ -79,6 +95,7 @@ const {
       <div className="form-group mb-3">
         <label htmlFor="image">Ảnh sản phẩm</label>
         <input
+           defaultValue ={OneProduct?.image}
           type="text"
           id="image"
           className={`form-control ${errors.image ? 'is-invalid' : ''}`}
@@ -91,6 +108,7 @@ const {
       <div className="form-group mb-3">
         <label htmlFor="Des">Des sản phẩm</label>
         <input
+         defaultValue ={OneProduct?.Des}
           type="text"
           id="Des"
           className={`form-control ${errors.Des ? 'is-invalid' : ''}`}
@@ -106,4 +124,4 @@ const {
   )
 }
 
-export default AddProduct
+export default EditProduct

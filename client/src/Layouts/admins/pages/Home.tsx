@@ -1,7 +1,8 @@
 import React from 'react'
-import { Iproduct } from '../interface/Iproduct'
-import Instance from '../api'
+
 import { Link } from 'react-router-dom'
+import Instance from '../../../api';
+import { Iproduct } from '../../../interface/Iproduct';
 
 type Props = {
     Products:Iproduct[]
@@ -21,33 +22,33 @@ const Home = ({Products,setProducts}:Props) => {
      }
     
    }
-  return (
+   return (
     
     <div style={{margin:50}}>
        <table >
       <thead>
         <tr>
           <th>ID</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Des</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
+        <th>Name</th>
+         <th>Price</th>
+           <th>Des</th>
+           <th>Action</th>
+         </tr>
+       </thead>
+       <tbody>
         {Products.map((product) => (
           <tr key={product.id}>
             <td>{product.id}</td>
-            <td>{product.name}</td>
+             <td>{product.name}</td>
             <td>{product.price}</td>
             <td>{product.Des}</td>
             <td><button onClick={()=>{OnDelete(product.id)}}>Xóa</button></td>
             <td><button> <Link to={`/edit/${product.id}`}>Sửa</Link></button></td>
           </tr>
-        ))}
-      </tbody>
+         ))}
+       </tbody>
     </table>
-    </div>
+     </div>
   )
 }
 

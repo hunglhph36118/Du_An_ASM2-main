@@ -1,10 +1,10 @@
 import Joi from 'joi'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { User } from '../interface/User'
+import { User } from '../../../interface/User'
 import { useNavigate } from 'react-router-dom'
 import { joiResolver } from '@hookform/resolvers/joi'
-import Instance from '../api'
+import Instance from '../../../api'
 
 
 const UserSchema = Joi.object({

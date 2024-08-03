@@ -1,10 +1,8 @@
 import React from 'react'
 
-interface Props {
-    
-}
 
-const Detail_Product = (props: Props) => {
+
+const Detail_Product = () => {
     return (
      <div>
   <div>

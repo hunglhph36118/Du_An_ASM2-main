@@ -1,13 +1,5 @@
 {
-  "products": [
-    {
-      "name": "1ddddd_update1111",
-      "price": 100,
-      "image": "asss",
-      "Des": "asss",
-      "id": "2437"
-    }
-  ],
+  "products": [],
   "users": [
     {
       "email": "chuc1@gmail.com",
